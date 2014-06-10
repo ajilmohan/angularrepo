@@ -38,4 +38,14 @@ public class BookmarkServiceImpl implements BookmarkService {
 		return bookmarkRepo.findAll();
 	}
 
+	@Override
+	public List<Bookmark> findBookmarkForUserAndPlace(Bookmark bookmark) {
+		return bookmarkRepo.find(bookmark.getUserName(), bookmark.getVennueId());
+	}
+
+	@Override
+	public List<Bookmark> findByUserName(String username) {
+		return bookmarkRepo.findByUserName(username);
+	}
+
 }

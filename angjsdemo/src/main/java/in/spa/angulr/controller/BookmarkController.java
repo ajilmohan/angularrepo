@@ -33,8 +33,8 @@ public class BookmarkController {
 	public ResponseEntity<List<BookmarkDTO>> getBookmarks(@PathVariable("username") String name){
 		List<BookmarkDTO> bookmarkDTOs = null;
 		try {
-				bookmarkDTOs = this.mapBookmarkToBookmarkDTO(bookmarkService.findAll());
-		} catch (SQLException e) {
+				bookmarkDTOs = this.mapBookmarkToBookmarkDTO(bookmarkService.findByUserName(name));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return new ResponseEntity<List<BookmarkDTO>>(bookmarkDTOs, HttpStatus.OK);
@@ -44,8 +44,16 @@ public class BookmarkController {
 	public ResponseEntity<String> createBookmarks(@RequestBody BookmarkDTO bookmark){
 		String status = "";
 		try {
+			
+			Bookmark bookark = this.mapBookmarkDtoToBookmark(bookmark);
+			
+			//validate
+			if(this.checkRecordPresentForThePlaceAndUser(bookark)){
+				return new ResponseEntity<String>("Error", HttpStatus.NOT_MODIFIED);
+			}
+			
 			Bookmark bookmarkPersisted = null;
-			bookmarkPersisted = bookmarkService.save(this.mapBookmarkDtoToBookmark(bookmark));
+			bookmarkPersisted = bookmarkService.save(bookark);
 			if(bookmarkPersisted != null){
 				status = "Book mark created";
 			}
@@ -54,6 +62,16 @@ public class BookmarkController {
 			return new ResponseEntity<String>(status, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<String>(status, HttpStatus.OK);
+	}
+	
+	private boolean checkRecordPresentForThePlaceAndUser( Bookmark bookmark){
+		
+		List<Bookmark>  bookmarks  = bookmarkService.findBookmarkForUserAndPlace(bookmark);
+		if(bookmarks != null && !bookmarks.isEmpty()){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private List<BookmarkDTO> mapBookmarkToBookmarkDTO(List <Bookmark> bookmarks){

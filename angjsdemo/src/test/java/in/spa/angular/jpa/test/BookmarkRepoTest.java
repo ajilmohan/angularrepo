@@ -1,10 +1,11 @@
 package in.spa.angular.jpa.test;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import in.spa.angulr.domain.Bookmark;
 import in.spa.angulr.repo.BookmarkRepo;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +23,7 @@ public class BookmarkRepoTest {
 	@Autowired
 	private BookmarkRepo bookmarkRepo;
 	
-	@Test
+//	@Test
 	@Transactional
 	@Rollback(false)
 	public void testInsert(){
@@ -41,9 +42,22 @@ public class BookmarkRepoTest {
 		try {
 			bookmarkRepo.save(bk);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void getBookmarksForuser(){
+		Bookmark bk  = new Bookmark();
+		bk.setUserName("Praveen");
+		bk.setVennueId("3fd66200f964a520c7f11ee3");
+		try {
+		 List<Bookmark>	 bookmarks  =  bookmarkRepo.find(bk.getUserName(), bk.getVennueId());
+		 System.out.println(bookmarks.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

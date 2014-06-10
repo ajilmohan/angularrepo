@@ -27,7 +27,7 @@ app.factory('placesDataService', function ($http, toaster) {
     	var createUri = serviceBase + "create"
  
         return $http.post(createUri, miniVenue).then(
- 
+        		
         function (results) {
             toaster.pop('success', "Bookmarked Successfully", "Place saved to your bookmark!");
         },
@@ -43,7 +43,7 @@ app.factory('placesDataService', function ($http, toaster) {
     };
  
     var _getUserPlaces = function (userName, pageIndex, pageSize) {
-    	userName = "ajil";
+    	//userName = "ajil";
         return $http.get(serviceBase + userName, { params: { page: pageIndex, pageSize: pageSize } }).then(function (results) {
             return results;
         });
