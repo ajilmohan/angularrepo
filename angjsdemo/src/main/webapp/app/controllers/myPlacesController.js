@@ -20,7 +20,7 @@ app.controller('myPlacesController', function ($scope, placesDataService) {
         if (true) {
 
             placesDataService.getUserPlaces(userInCtx, $scope.currentPage - 1, $scope.pageSize).then(function (results) {
-
+debugger;
                 $scope.myPlaces = results.data;
 
                 var paginationHeader = angular.fromJson(results.headers("x-pagination"));

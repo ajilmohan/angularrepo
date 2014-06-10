@@ -5,7 +5,9 @@ import in.spa.angulr.dto.BookmarkDTO;
 import in.spa.angulr.service.BookmarkService;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
@@ -38,7 +40,7 @@ public class BookmarkController {
 		return new ResponseEntity<List<BookmarkDTO>>(bookmarkDTOs, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="create", method=RequestMethod.POST)
+	@RequestMapping(value="/create", method=RequestMethod.POST)
 	public ResponseEntity<String> createBookmarks(@RequestBody BookmarkDTO bookmark){
 		String status = "";
 		try {
@@ -68,10 +70,22 @@ public class BookmarkController {
 	
 	private Bookmark mapBookmarkDtoToBookmark(BookmarkDTO dto){
 		  //Initialize the Mapper
-        Mapper mapper = new DozerBeanMapper();
+       /* Mapper mapper = new DozerBeanMapper();
 		Bookmark bookmark  = null;
 		bookmark = mapper.map(bookmark, Bookmark.class);
+		return bookmark;*/
+		
+		Bookmark bookmark  = new Bookmark();
+		bookmark.setAddress(dto.getAddress());
+		bookmark.setCategorys(dto.getCategorys());
+		bookmark.setRating(dto.getRating());
+		bookmark.setUserName(dto.getUserName());
+		bookmark.setVennueId(dto.getVennueId());
+		bookmark.setVennueName(dto.getVennueName());
+		Date todaydate  = new Date();
+		bookmark.setTs(new Timestamp(todaydate.getTime()));
 		return bookmark;
+		
 	}
 	
 

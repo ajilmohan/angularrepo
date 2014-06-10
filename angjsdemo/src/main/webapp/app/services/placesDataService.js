@@ -15,17 +15,18 @@ app.factory('placesDataService', function ($http, toaster) {
  
     var _savePlace = function (venue) {
         //process venue to take needed properties
- 
-        var miniVenue = {
-            userName: userInContext,
-            venueID: venue.id,
-            venueName: venue.name,
-            address: venue.location.address,
-            category: venue.categories[0].shortName,
-            rating: venue.rating
+    	var miniVenue = {
+                userName: userInContext,
+                vennueId: venue.id,
+                vennueName: venue.name,
+                address: venue.location.address,
+                categorys: venue.categories[0].shortName,
+                rating: venue.rating
         };
+    	
+    	var createUri = serviceBase + "create"
  
-        return $http.post(serviceBase, miniVenue).then(
+        return $http.post(createUri, miniVenue).then(
  
         function (results) {
             toaster.pop('success', "Bookmarked Successfully", "Place saved to your bookmark!");
@@ -42,7 +43,6 @@ app.factory('placesDataService', function ($http, toaster) {
     };
  
     var _getUserPlaces = function (userName, pageIndex, pageSize) {
-    	debugger;
     	userName = "ajil";
         return $http.get(serviceBase + userName, { params: { page: pageIndex, pageSize: pageSize } }).then(function (results) {
             return results;
